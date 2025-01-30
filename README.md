@@ -1134,6 +1134,8 @@ However, in a real-world scenario, this is not the case due to clock variations 
 
 ![Screenshot 2025-01-30 152555](https://github.com/user-attachments/assets/ce232592-5a57-420c-ba0b-02ee0f980687)
 
+![Screenshot 2025-01-30 154513](https://github.com/user-attachments/assets/9bffcf44-fc9c-4cf9-a452-317ae8864ad0)
+
 
 Step 4: Clock Variability and Real-World Considerations
 On an actual chip, clock edges do not always arrive exactly at their expected time due to:
@@ -1164,6 +1166,70 @@ Once the realistic eye diagram is generated, we can extract essential timing val
 Setup time – The minimum time before the clock edge when data must be stable.
 Hold time – The minimum time after the clock edge when data must remain stable.
 These values are then used in static timing analysis (STA) to verify circuit performance and identify potential timing violations.
+
+![Screenshot 2025-01-30 155532](https://github.com/user-attachments/assets/c477ddf8-cff3-498c-89e2-8c6ccb16228a)
+
+![Screenshot 2025-01-30 155801](https://github.com/user-attachments/assets/cbaaaf55-ce52-4ef0-b25c-a1fe8803fbc7)
+
+
+![Screenshot 2025-01-30 160010](https://github.com/user-attachments/assets/e6020714-49f2-426d-a8d1-d8ba4f7f14ec)
+
+
+![Screenshot 2025-01-30 160159](https://github.com/user-attachments/assets/0b3a5d19-e456-4e1c-9206-bdbfe65b2449)
+
+
+
+**Section 3.6 Jitter extraction and accounting in setup timing analysis**
+
+
+![Screenshot 2025-01-30 160918](https://github.com/user-attachments/assets/5f2db00c-2520-48f5-86fa-29dcacc848e8)
+
+
+![Screenshot 2025-01-30 161709](https://github.com/user-attachments/assets/dc328865-a274-45fd-8066-9dfb694ce72e)
+
+
+Understanding Timing Analysis: Setup and Uncertainty Considerations
+
+
+Understanding the Eye Diagram and Noise Margins
+The eye diagram provides a visual representation of signal integrity and timing variations. The key regions within the diagram include:
+
+Noise Margins:
+Noise Margin High (NMH): The region where signals are interpreted as logical '1'.
+
+Noise Margin Low (NML): The region where signals are interpreted as logical '0'.
+
+Noise margins define the amount of distortion allowed before signal integrity is compromised.
+
+In an ideal scenario, signals fit neatly within these margins, but in reality, power supply variations, voltage drops, and signal jitter introduce distortions.
+
+Clock Jitter and Its Impact on Timing Analysis
+
+Clock jitter is a variation in clock signal arrival times, causing deviations in clock period. When analyzing setup timing, we must account for this uncertainty.
+
+Clock Period Variation:
+If the clock arrives earlier or later than expected, the effective clock period may be shorter or longer than intended.
+This variation must be considered in setup timing analysis to ensure reliable operation.
+Modeling Uncertainty in Setup Timing Analysis
+To account for jitter and other variations, we introduce the concept of uncertainty in timing calculations:
+
+Defining Uncertainty:
+
+Uncertainty is derived from clock jitter and other variations.
+It is subtracted from the nominal clock period to ensure conservative timing analysis.
+Mathematical Representation:
+
+Data Required Time = Clock Period - Setup Uncertainty
+Slack = Data Required Time - Data Arrival Time
+Slack should always be positive or zero. A negative slack indicates a timing violation that needs correction.
+
+Handling Slack Violations
+If slack is negative, it means the setup timing requirement is not met.
+Engineering Change Orders (ECOs) are used to resolve timing violations by adjusting clock constraints, optimizing placement, or modifying circuit paths.
+Graphical Representation vs. Timing Reports
+In real-world applications, timing analysis is often conducted through reports rather than graphical representations.
+Reports contain numerical values for timing parameters, which engineers use to verify setup timing, hold timing, and on-chip variations (OCV).
+
 
 
 
