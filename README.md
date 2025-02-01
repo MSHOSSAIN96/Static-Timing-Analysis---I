@@ -1733,6 +1733,292 @@ Understanding these concepts allows designers to mitigate timing uncertainties a
 ![Screenshot 2025-01-30 213623](https://github.com/user-attachments/assets/9f8cb1a6-14fb-4d98-9b30-141743768d48)
 
 
+**Chapter 06: OCV based setup timing analysis**
+
+**Section 6.1 OCV based setup timing analysis**
+
+![Screenshot 2025-01-31 102641](https://github.com/user-attachments/assets/c9cb95a6-a4a1-4226-8262-d8cdc9a09a6c)
+
+![Screenshot 2025-01-31 101551](https://github.com/user-attachments/assets/06d9dd4f-e9e2-42f7-9b0e-3b70da604f2b)
+
+![Screenshot 2025-01-31 101527](https://github.com/user-attachments/assets/2a64023c-959b-4835-90c3-809c765ade61)
+
+![Screenshot 2025-01-31 101008](https://github.com/user-attachments/assets/05532042-15ad-4ebe-8e16-610053b0ff66)
+
+![Screenshot 2025-01-31 100742](https://github.com/user-attachments/assets/5294aaf4-98ce-4fe4-bab4-b38401755c77)
+
+![Screenshot 2025-01-31 100321](https://github.com/user-attachments/assets/2c9ba986-5e3f-4bf3-ba09-e38ecacfa688)
+
+OCV Timing and Setup Analysis
+
+We explored the concept of setup timing analysis and introduced the graphical representation of delays in logic cells. The key takeaway was that a cell designed to have a delay of 100 picoseconds might actually exhibit delays ranging from 80 to 120 picoseconds due to variations in on-chip conditions.
+
+Understanding Delay Variations
+
+Due to on-chip variations (OCV), a logic cell’s delay can fluctuate within a specific range. For example, a cell designed for 100 picoseconds might have a minimum delay of 80 picoseconds and a maximum of 120 picoseconds.
+
+To incorporate these variations in setup timing analysis, we have four possible scenarios:
+
+Increase both data arrival and required time delays by 20%.
+
+Increase data arrival time by 20% and decrease required time by 20%.
+
+Decrease data arrival time by 20% and increase required time by 20%.
+
+Decrease both data arrival and required time delays by 20%.
+
+The key challenge is determining which of these scenarios provides a more realistic and conservative analysis.
+
+Clock Pulling and Pushing
+When adjusting clock delays, two important terms come into play:
+
+Clock Pull-in: If we reduce delays in the clock path by 20%, the clock edges move closer to the launch edge.
+Clock Push-out: If we increase delays in the clock path by 20%, the clock edges move closer to the capture edge.
+By reducing delays, the clock signals arrive earlier (pull-in), while increasing delays causes them to arrive later (push-out).
+
+Impact on Setup Timing
+If we reduce delays in the clock path (clock pull-in), it can lead to setup violations, as the data has less time to reach the capture flip-flop.
+If we increase delays in the clock path (clock push-out), it provides a more conservative estimate and helps account for real-world variations.
+Many methodologies prefer implementing clock pull-in and push-out for better accuracy in timing analysis. While some approaches apply adjustments to both the clock and data paths, the clock path adjustments are the most crucial for ensuring realistic and reliable timing verification.
+
+**6.2 Setup timing analysis after pessimism removal**
+
+![Screenshot 2025-01-31 104257](https://github.com/user-attachments/assets/55a26d5d-fc33-4cbe-bb3b-a2031c53ebb6)
+
+
+![Screenshot 2025-01-31 105929](https://github.com/user-attachments/assets/016932ee-3ba5-4142-ad07-e4a09d8f0053)
+
+
+![Screenshot 2025-01-31 111055](https://github.com/user-attachments/assets/bcf88929-ee1e-40f8-90e5-3c6c4016422f)
+
+
+
+In our setup timing analysis, we encountered negative slack, which means the system might not be able to operate at its intended 1 GHz frequency. Instead, due to on-chip variations (OCV), the system could run at a lower frequency, such as 980 MHz or 975 MHz.
+
+To refine our analysis, we need to remove unnecessary pessimism from our calculations.
+
+Understanding Common Clock Paths and Delay Discrepancies
+
+Looking at our new delay values after applying a 20% variation, we notice an inconsistency:
+
+The launch clock and capture clock sections appear to share common elements.
+This means certain cells are common to both the launch path and capture path.
+Key Observation:
+A cell in the common clock path should not have two different delay values at the same instant in time.
+
+For example, consider cell B1 in our circuit:
+
+Based on OCV calculations, its delay is 0.043 ns (43 ps) in one case and 0.034 ns (34 ps) in another.
+
+However, a physical cell cannot have two different delays simultaneously—it can only have one delay value at any given instant.
+
+This introduces unnecessary pessimism in our calculations.
+
+Identifying Pessimism:
+
+The difference between the two delays for B1 is 8.6 ps (0.043 ns - 0.034 ns).
+
+This extra pessimism has been inadvertently added to the analysis.
+
+Summing Up Common Clock Path Delays:
+
+The total delay for the launch clock path is 1.28 ns (1280 ps).
+
+The total delay for the capture clock path is 1.024 ns (1024 ps).
+
+The difference is 25.6 ps, which is an additional pessimism factor.
+
+Correcting the Setup Timing Analysis:
+
+Since this pessimism was accidentally added, we need to subtract it from our calculations.
+
+We adjust the required time by adding 25.6 ps.
+
+The new required time becomes 1.12 ns instead of a lower, more pessimistic value.
+
+After correcting for additional pessimism, we recalculate the slack.
+
+Before correction: The slack was negative.
+
+After correction: The slack is now positive, meaning the system can still operate at 1 GHz.
+
+Pessimism removal is crucial to prevent unnecessarily restrictive timing results.
+
+Clock path pessimism (CCP) is a common issue in static timing analysis (STA) and must be accounted for.
+
+Without this correction, engineers might wrongly assume a design cannot meet timing at the desired frequency.
+
+
+**Section 6.3 OCV based hold timing analysis**
+
+
+![Screenshot 2025-02-01 110312](https://github.com/user-attachments/assets/cb36b8e1-cb15-4461-bf49-9948c01b45d1)
+
+
+![Screenshot 2025-01-31 111845](https://github.com/user-attachments/assets/ef14451d-cbbf-49e0-955d-d0221085d2f1)
+
+![Screenshot 2025-01-31 112319](https://github.com/user-attachments/assets/430f4352-65fe-4bcd-9bde-30366e88c42d)
+
+
+![Screenshot 2025-01-31 112405](https://github.com/user-attachments/assets/8b9cf09b-00db-4b2e-ba88-90e3b6b10c7c)
+
+
+![Screenshot 2025-01-31 112727](https://github.com/user-attachments/assets/782d6165-edc8-4440-974a-dabe3884332f)
+
+
+OCV Timing Analysis for Hold Timing
+
+ We have covered the fundamental concepts, including clock pulling, clock pushing, and the impact of On-Chip Variations (OCV) on timing. Now, the next step is to implement the OCV analysis systematically.
+
+Step 1: Understanding OCV in Hold Timing
+
+In fabrication, logical cells designed with a nominal delay (e.g., 100 ps) can actually have a delay ranging anywhere between 80 ps and 120 ps due to process variations.
+This variation occurs because of manufacturing inconsistencies, impacting chip timing.
+Four Possible Scenarios in OCV Timing
+As discussed earlier, we have four possible variations in OCV hold timing:
+
+Launch clock delay decreases (clock pull-in).
+
+Capture clock delay increases (clock push-out).
+
+Both clocks experience a 20% variation (worse case).
+
+A mix of variations leading to an extreme scenario.
+
+Our goal is to analyze the worst-case scenario, ensuring that the design remains functional under all conditions.
+
+Step 2: Implementing a Conservative Analysis
+
+We want to minimize launch clock delay while maximizing capture clock delay to create a worst-case hold violation scenario.
+
+If the design passes the worst-case analysis, it will pass under any real-world condition.
+
+Step 3: Clock Pull-in and Clock Push-out
+
+Clock Pull-in (Reducing Launch Clock Delay)
+
+The delay of each clock cell in the launch path is reduced by 20%.
+
+This pulls the clock edge earlier, increasing the risk of hold violations.
+
+Clock Push-out (Increasing Capture Clock Delay)
+
+The delay of each clock cell in the capture path is increased by 20%.
+
+This pushes the clock edge later, further worsening hold timing.
+
+Since hold analysis is based on a single clock edge transition, we must be extra cautious to ensure reliable data capture.
+
+Step 4: Combining Clock Pull-in and Push-out for Hold Analysis
+
+Clock pull-in reduces data arrival time.
+
+Clock push-out increases data capture delay.
+
+Together, they create an extreme stress scenario, identifying potential hold violations.
+
+Data arrival time reduces → Hold slack decreases.
+
+Capture clock delay increases → Hold slack decreases further.
+
+Hold slack might turn negative, indicating a potential hold violation.
+
+If the hold timing fails, there is no way to fix it after fabrication. Unlike setup violations (which can be adjusted by lowering frequency), hold violations can cause metastability, leading to chip failure.
+
+Step 5: Applying 20% OCV Variation and Calculating Hold Slack
+
+We apply a 20% variation to both launch and capture clocks.
+
+Launch clock delays being reduced by 20%.
+
+Capture clock delays being increased by 20%.
+
+After adjustments, we recalculate hold slack to determine if the chip remains functional.
+
+**Section 6.4 Hold timing analysis after pessimism removal**
+
+![Screenshot 2025-01-31 114539](https://github.com/user-attachments/assets/197b07de-31b9-4a3f-8d3a-37d33e2dd640)
+
+![Screenshot 2025-01-31 114212](https://github.com/user-attachments/assets/b7c2b065-e962-4f46-89e3-67bbd84195d1)
+
+Step 1: Applying OCV Variations
+
+Clock Pull-in (Launch Clock Delay Reduction)
+
+We reduce the launch clock delay by 20%.
+
+For example, if a delay was 40 ps, it becomes 32 ps (20% less).
+
+Clock Push-out (Capture Clock Delay Increase)
+
+We increase the capture clock delay by 20%.
+
+If a delay was 30 ps, it becomes 36 ps (20% more).
+
+By applying these changes, we simulate the worst-case hold timing scenario.
+
+Step 2: Recalculating Data Arrival Time
+
+After applying the 20% variations, we calculate the new data arrival time:
+
+The adjusted data arrival time is 0.312 ns (312 ps).
+
+You can verify this by summing up the delays in a calculator.
+
+Similarly, after adjusting for the capture clock delay increase, the total delay becomes 0.3516 ns (351.6 ps).
+
+With these values, the new hold slack is:
+
+Slack = Data Capture Time - Data Arrival Time
+
+Slack = -10.6 ps (Negative Slack)
+
+Since the slack is negative, this indicates a hold timing violation.
+
+Step 3: Understanding the Impact of Hold Violations
+
+The negative slack suggests that under certain conditions, some sections of the chip may fail due to hold violations.
+
+Unlike setup violations, which can be fixed by reducing frequency, hold violations cannot be corrected after fabrication.
+
+Unreliable data capture due to hold violations can lead to functionality loss.
+
+Since we detected this issue before fabrication, we now have the opportunity to correct it before production.
+
+Step 4: Addressing Pessimism in the Analysis
+
+Identifying Pessimism in the Clock Network
+
+We analyze common clock network paths in both launch and capture paths.
+
+The delay in these sections should be identical, but overestimation (pessimism) can occur.
+
+For example:
+
+Clock network delay (expected): 102.4 ps
+
+Clock network delay (actual): 153.6 ps
+
+Pessimism introduced: 51.2 ps
+
+Correcting Pessimism
+
+By removing the pessimistic delay (51.2 ps), the updated data arrival time improves.
+
+The new hold slack becomes +16.6 ps (0.116 ns), which is now positive.
+
+This correction ensures that the hold timing is met, proving the importance of identifying and removing pessimism in analysis.
+
+
+
+
+
+
+
+
+
+
+
 
 
 
