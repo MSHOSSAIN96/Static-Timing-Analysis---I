@@ -17,7 +17,7 @@ Libraries:
 Libraries are where the delay models come into play. These models represent the behavior of various cells and gates, which are the building blocks of a chip.
 
 I’ll dive into different models like NLDM (Non-Linear Delay Model) and CCS (Current Source Model).
-While I cover the basics of these libraries, a more detailed discussion on advanced modeling techniques will be available in a separate course.
+
 
 
 From this directory I’ll be able to:
