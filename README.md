@@ -430,10 +430,15 @@ If pulse degradation exceeds limits, the clock may fail to launch or capture dat
 We need to ensure that the pulse width remains within an acceptable range to maintain circuit stability.
 
 Setup and Hold Analysis (Ensuring correct data arrival and capture)
+
 Transition (Slew) Analysis (Verifying that signal transitions are within limits)
+
 Load Analysis (Ensuring proper capacitance and fanout)
+
 Clock Skew Analysis (Managing clock delays across flip-flops)
+
 Clock Pulse Width Analysis (Ensuring pulse integrity for proper data capturing)
+
 Each of these analyses plays a vital role in ensuring functional and timing correctness in VLSI design.
 
 
@@ -728,7 +733,9 @@ Pin-Based Slack Analysis:
 To perform more precise slack computations, we introduce pin-level slack analysis:
 
 Input pin slack
+
 Output pin slack
+
 Internal pin slack
 
 Each pin will have its own arrival time and required time, allowing for finer-grained optimizations. This level of detail helps in accurate timing calculations, making optimizations more effective.
@@ -1224,6 +1231,7 @@ Slack = Data Required Time - Data Arrival Time
 Slack should always be positive or zero. A negative slack indicates a timing violation that needs correction.
 
 Handling Slack Violations
+
 If slack is negative, it means the setup timing requirement is not met.
 Engineering Change Orders (ECOs) are used to resolve timing violations by adjusting clock constraints, optimizing placement, or modifying circuit paths.
 Graphical Representation vs. Timing Reports
