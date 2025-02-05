@@ -1334,17 +1334,7 @@ Converting graphical timing analysis to textual representation is essential for 
 
 ![Screenshot 2025-01-30 183706](https://github.com/user-attachments/assets/db2a0014-1ab6-4169-9651-dadb3e958bed)
 
-Discussion on Hold Time Analysis and Textual Representation
 
-Following the same structured approach we used for setup analysis. We will:
-
-Define key specifications
-Analyze ideal clock conditions
-Introduce real clocks
-Understand timing uncertainty
-Derive the final equation
-Convert graphical representations into textual format
-Understanding Hold Time Analysis
 Hold time analysis primarily focuses on the launch flop and the time required to hold the data stable after the clock edge. Unlike setup analysis, which is concerned with data capture, hold time analysis ensures that data remains valid long enough for proper storage.
 
 ![Screenshot 2025-01-30 184938](https://github.com/user-attachments/assets/91591532-ad21-4bd5-a5f0-10f0c6512632)
@@ -1366,6 +1356,7 @@ Once we introduce real clock effects, we must account for clock network delays. 
 The general equation for hold time analysis becomes:
 
 Combinational delay+Launch clock network delay≥Hold time+Capture clock network delay
+
 Combinational delay+Launch clock network delay≥Hold time+Capture clock network delay
 
 Representing this with delay terms:
@@ -1376,6 +1367,7 @@ Representing this with delay terms:
 
 where:
 Δ1 = Delay in the launch clock network
+
 Δ2 = Delay in the capture clock network
 
 Considering Uncertainty in Hold Time Analysis
@@ -1394,17 +1386,22 @@ Graphical to Textual Conversion
 To complete the analysis, we convert the graphical timing representation into a textual format for report generation. Key elements include:
 
 Data arrival time – Time when data reaches the capture flop.
+
 Data required time – Minimum time required for data stability after the clock edge.
+
 Slack Calculation – Difference between required and actual time:
+
 Slack=Data arrival time−Data required time
+
 Slack=Data arrival time−Data required time
+
 Unlike setup analysis (where slack should be positive or zero), here, slack is expected to be zero or positive to ensure data stability.
 
 Hold time analysis differs from setup analysis in key ways:
 
 Setup analysis requires data to arrive before a specific deadline.
 Hold time analysis ensures data remains stable for a minimum duration after the clock edge.
-The derived equations account for real clock effects, uncertainty, and delays
+
 
 **Section 4.3 Hold analysis - graphical to textual representation**
 
